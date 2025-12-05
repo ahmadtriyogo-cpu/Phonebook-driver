@@ -1,0 +1,1417 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phonebook Driver Surabaya - AHT</title>
+<style>
+body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:12px;background:#fff;color:#111}
+.container{max-width:1000px;margin:0 auto;padding:10px}
+h1{font-size:20px;margin:6px 0}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+input[type=search]{flex:1;padding:10px;border-radius:8px;border:1px solid #ccc;font-size:15px}
+button{padding:8px 10px;border-radius:8px;border:1px solid #888;background:#f7f7f7;cursor:pointer}
+.table{overflow:auto}
+table{width:100%;border-collapse:collapse}
+th,td{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:14px}
+th{position:sticky;top:0;background:#fafafa}
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-top:10px}
+.card{border:1px solid #e6e6e6;padding:10px;border-radius:8px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,0.03)}
+.card .name{font-weight:700;margin-bottom:6px}
+.small{font-size:13px;color:#555;margin-top:6px}
+.badge{display:inline-block;padding:3px 6px;border-radius:12px;background:#eef;font-size:12px;margin-right:6px}
+.footer{margin-top:14px;color:#666;font-size:13px}
+a.wa{display:inline-block;padding:6px 8px;border-radius:6px;background:#25D366;color:#fff;text-decoration:none;font-weight:600}
+@media (max-width:600px){th,td{font-size:13px;padding:6px}}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>📱 Phonebook Driver Surabaya - AHT</h1>
+<div class="controls">
+<input type="search" id="q" placeholder="Cari nama / lambung / status / serikat / no hp..." oninput="filter()" />
+<button onclick="show('table')">Tabel</button>
+<button onclick="show('cards')">Kartu</button>
+<button onclick="resetFilter()">Reset</button>
+</div>
+<div id="tableView" class="table"><table id="tbl"><thead><tr><th>Nama</th><th>No Lambung</th><th>Status Driver</th><th>Status Serikat</th><th>No HP (klik WA)</th></tr></thead><tbody>
+<tr><td>Abd Rohman</td><td>S86</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6287701354151' target='_blank'>6287701354151</a></td></tr>
+<tr><td>Abdul</td><td>S25</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281232286663' target='_blank'>6281232286663</a></td></tr>
+<tr><td>Abdul Gani</td><td>S38</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281232689947' target='_blank'>6281232689947</a></td></tr>
+<tr><td>Abdul Hamid</td><td>S03</td><td></td><td>SPSI KEP</td><td><a class='wa' href='https://wa.me/6282230014446' target='_blank'>6282230014446</a></td></tr>
+<tr><td>Abdur Rachman</td><td>S47</td><td>Batangan Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6282245671550' target='_blank'>6282245671550</a></td></tr>
+<tr><td>Ach. Hafit</td><td>S11</td><td>Batangan Haulage</td><td>PBS</td><td><a class='wa' href='https://wa.me/6282229095731' target='_blank'>6282229095731</a></td></tr>
+<tr><td>Achmad Agi Prasetyo</td><td>S33</td><td></td><td>SPSI KEP</td><td><a class='wa' href='https://wa.me/6281333096840' target='_blank'>6281333096840</a></td></tr>
+<tr><td>Adenan</td><td>S51</td><td>Batangan Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281233676267' target='_blank'>6281233676267</a></td></tr>
+<tr><td>Adi Wahyono</td><td>TEMBAK</td><td>Tembak Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6282291705474' target='_blank'>6282291705474</a></td></tr>
+<tr><td>Aditia Junianto</td><td>S38</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/62895321231818' target='_blank'>62895321231818</a></td></tr>
+<tr><td>Agung Prasetyo Utomo</td><td>S55/S59/S60</td><td>Cadangan Dooring</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281283533126' target='_blank'>6281283533126</a></td></tr>
+<tr><td>Agus Efendi</td><td>TEMBAK</td><td>Tembak Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6282142534081' target='_blank'>6282142534081</a></td></tr>
+<tr><td>Agus Salim</td><td>TEMBAK</td><td>Tembak Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281997923483' target='_blank'>6281997923483</a></td></tr>
+<tr><td>Agus Santoso</td><td>S63</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6288216940034' target='_blank'>6288216940034</a></td></tr>
+<tr><td>Agus Suwanto</td><td>TEMBAK</td><td>Tembak Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285293298007' target='_blank'>6285293298007</a></td></tr>
+<tr><td>Ahmad Rizal</td><td>S10</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6283844622988' target='_blank'>6283844622988</a></td></tr>
+<tr><td>Ahmadi</td><td>TEMBAK</td><td>Tembak Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6285280267880' target='_blank'>6285280267880</a></td></tr>
+<tr><td>Ajis Sujarwo</td><td>S53</td><td>Batangan Dooring</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285940342567' target='_blank'>6285940342567</a></td></tr>
+<tr><td>Alvian</td><td>S52</td><td>Batangan Dooring</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6282139666360' target='_blank'>6282139666360</a></td></tr>
+<tr><td>Amali Hadi Priyanto</td><td>S42</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6289685450429' target='_blank'>6289685450429</a></td></tr>
+<tr><td>Andik Harianto</td><td>S16</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6287853620080' target='_blank'>6287853620080</a></td></tr>
+<tr><td>Andik Prasetyo</td><td>TEMBAK</td><td>Tembak Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285855114262' target='_blank'>6285855114262</a></td></tr>
+<tr><td>Aris Septio Rubiantoro</td><td>S18</td><td></td><td>SPSI KEP</td><td><a class='wa' href='https://wa.me/6281338182424' target='_blank'>6281338182424</a></td></tr>
+<tr><td>Asnan</td><td>TEMBAK</td><td>Tembak Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281349347672' target='_blank'>6281349347672</a></td></tr>
+<tr><td>Badrus Soleh</td><td>TEMBAK</td><td>Tembak Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281358653330' target='_blank'>6281358653330</a></td></tr>
+<tr><td>Bambang F</td><td>S24</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281330429600' target='_blank'>6281330429600</a></td></tr>
+<tr><td>Basuki Rachmat</td><td>S94</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6282134813500' target='_blank'>6282134813500</a></td></tr>
+<tr><td>Bonefasius Nusa</td><td>S38</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6282264951207' target='_blank'>6282264951207</a></td></tr>
+<tr><td>Budi Santoso</td><td>TEMBAK</td><td>Tembak Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6282336027742' target='_blank'>6282336027742</a></td></tr>
+<tr><td>Budi Santoso (Breng)</td><td>S41</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281357209143' target='_blank'>6281357209143</a></td></tr>
+<tr><td>Budi Santoso (Cad)</td><td>S30</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281246467366' target='_blank'>6281246467366</a></td></tr>
+<tr><td>Budi Satriyo</td><td>S33</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/628133110001' target='_blank'>628133110001</a></td></tr>
+<tr><td>Cucut Eko Sunaryo</td><td>S39</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6285607046310' target='_blank'>6285607046310</a></td></tr>
+<tr><td>Darsono</td><td>S19</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285749016711' target='_blank'>6285749016711</a></td></tr>
+<tr><td>Davit</td><td>TEMBAK</td><td>Tembak Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6282229371641' target='_blank'>6282229371641</a></td></tr>
+<tr><td>Dedi Navita</td><td>S01</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6282229053900' target='_blank'>6282229053900</a></td></tr>
+<tr><td>Dedi Widiantoro</td><td>TEMBAK</td><td>Tembak Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6285730650146' target='_blank'>6285730650146</a></td></tr>
+<tr><td>Dedy Andryan</td><td>S45</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281326452469' target='_blank'>6281326452469</a></td></tr>
+<tr><td>Dian Ariyanto</td><td>S43</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6285854564229' target='_blank'>6285854564229</a></td></tr>
+<tr><td>Didi Supriharyono</td><td>S10</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6285385532458' target='_blank'>6285385532458</a></td></tr>
+<tr><td>Didik Eko Cahyono</td><td>S46</td><td>Batangan Dooring</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6282330425462' target='_blank'>6282330425462</a></td></tr>
+<tr><td>Didik Muryanto</td><td>S18</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/62895371701111' target='_blank'>62895371701111</a></td></tr>
+<tr><td>Dodi Agung Saputro</td><td>TEMBAK</td><td>Tembak Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285231170258' target='_blank'>6285231170258</a></td></tr>
+<tr><td>Eko Sulistyono</td><td>T02</td><td>Batangan Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6285853643186' target='_blank'>6285853643186</a></td></tr>
+<tr><td>Fauzen</td><td>S24</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6282141100091' target='_blank'>6282141100091</a></td></tr>
+<tr><td>Graha Yudiana</td><td>S60</td><td>Batangan Dooring</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6288216923925' target='_blank'>6288216923925</a></td></tr>
+<tr><td>H. Moch. Makki</td><td>TEMBAK</td><td>Tembak Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6285103228871' target='_blank'>6285103228871</a></td></tr>
+<tr><td>Hadi Susanto</td><td>TEMBAK</td><td>Tembak Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6282331745017' target='_blank'>6282331745017</a></td></tr>
+<tr><td>Hamzah Abubakar</td><td>S17</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285904330951' target='_blank'>6285904330951</a></td></tr>
+<tr><td>Hariyanto</td><td>S11</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6282229327458' target='_blank'>6282229327458</a></td></tr>
+<tr><td>Harsino</td><td>S14</td><td>Batangan Haulage</td><td>PBS</td><td><a class='wa' href='https://wa.me/62818346536' target='_blank'>62818346536</a></td></tr>
+<tr><td>Hartoyo</td><td>S41</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285707412065' target='_blank'>6285707412065</a></td></tr>
+<tr><td>Hendra Rachmad Kurniawan</td><td>S13</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/62895329694233' target='_blank'>62895329694233</a></td></tr>
+<tr><td>Henri Prasetyo</td><td>S19</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281326396675' target='_blank'>6281326396675</a></td></tr>
+<tr><td>Hermanto_1</td><td>S43</td><td></td><td>SPSI KEP</td><td><a class='wa' href='https://wa.me/6283195625877' target='_blank'>6283195625877</a></td></tr>
+<tr><td>Hermanto_2</td><td>S24</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/628819804874' target='_blank'>628819804874</a></td></tr>
+<tr><td>Ilham Anshori</td><td>S30</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6282142011506' target='_blank'>6282142011506</a></td></tr>
+<tr><td>Imam Basuki</td><td>S02</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285257229984' target='_blank'>6285257229984</a></td></tr>
+<tr><td>Imam Siswanto</td><td>S51</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/62881027627464' target='_blank'>62881027627464</a></td></tr>
+<tr><td>Imam Syafii</td><td>S22</td><td>Batangan Haulage</td><td>PBS</td><td><a class='wa' href='https://wa.me/6287852989009' target='_blank'>6287852989009</a></td></tr>
+<tr><td>Imam Wahyudi</td><td>S14</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285748989956' target='_blank'>6285748989956</a></td></tr>
+<tr><td>Irawan Sugiono</td><td>S46/S47/S48</td><td>Cadangan Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281336617029' target='_blank'>6281336617029</a></td></tr>
+<tr><td>Ismail</td><td>TEMBAK</td><td>Tembak Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6285697827472' target='_blank'>6285697827472</a></td></tr>
+<tr><td>Iswoyo</td><td>S35</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281231965572' target='_blank'>6281231965572</a></td></tr>
+<tr><td>Iwan Ardiansyah</td><td>S23</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285230370077' target='_blank'>6285230370077</a></td></tr>
+<tr><td>Jakah Pranata</td><td>S65</td><td>Batangan Dooring</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6289516069300' target='_blank'>6289516069300</a></td></tr>
+<tr><td>Joesoef Kriswanto</td><td>S26</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6282143486874' target='_blank'>6282143486874</a></td></tr>
+<tr><td>Joko Mulyono</td><td>S14</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6287722556805' target='_blank'>6287722556805</a></td></tr>
+<tr><td>Kaharudin</td><td>TEMBAK</td><td>Tembak Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281323303738' target='_blank'>6281323303738</a></td></tr>
+<tr><td>Kuat Sutrisno</td><td>T01/T02/S05</td><td>Cadangan Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6282229638533' target='_blank'>6282229638533</a></td></tr>
+<tr><td>Lasmuri</td><td>S21</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281231980694' target='_blank'>6281231980694</a></td></tr>
+<tr><td>Lukman</td><td>S18</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6287701954269' target='_blank'>6287701954269</a></td></tr>
+<tr><td>Lukmanul Hakim</td><td>TEMBAK</td><td>Tembak Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6282143746828' target='_blank'>6282143746828</a></td></tr>
+<tr><td>M Arisjal Mubarok</td><td>TEMBAK</td><td>Tembak Dooring</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6283830680189' target='_blank'>6283830680189</a></td></tr>
+<tr><td>M Ikhsan</td><td>TEMBAK</td><td>Tembak Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6282231293629' target='_blank'>6282231293629</a></td></tr>
+<tr><td>M. Darwis</td><td>S21</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6287741433666' target='_blank'>6287741433666</a></td></tr>
+<tr><td>M. Harsad</td><td>S13</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/62881027077514' target='_blank'>62881027077514</a></td></tr>
+<tr><td>M. Sadi</td><td>S42</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6285100738405' target='_blank'>6285100738405</a></td></tr>
+<tr><td>M.Rahmat</td><td>S05</td><td>Batangan Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6285706706759' target='_blank'>6285706706759</a></td></tr>
+<tr><td>Machmud</td><td>TEMBAK</td><td>Tembak Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281235910554' target='_blank'>6281235910554</a></td></tr>
+<tr><td>Mahfut</td><td>S62</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281217181845' target='_blank'>6281217181845</a></td></tr>
+<tr><td>Mamad Mahmudia</td><td>S94</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6282140991199' target='_blank'>6282140991199</a></td></tr>
+<tr><td>Maman Santoso</td><td>S02</td><td></td><td>SPSI KEP</td><td><a class='wa' href='https://wa.me/6282233304989' target='_blank'>6282233304989</a></td></tr>
+<tr><td>Martinus Suparyo</td><td>S42</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281330309948' target='_blank'>6281330309948</a></td></tr>
+<tr><td>Maslan</td><td>S16</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281216755166' target='_blank'>6281216755166</a></td></tr>
+<tr><td>Mat Nilan</td><td>S32</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285706027208' target='_blank'>6285706027208</a></td></tr>
+<tr><td>Matrusi</td><td>S62</td><td>Batangan Dooring</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285727323268' target='_blank'>6285727323268</a></td></tr>
+<tr><td>Maulana Dwi Hardianto</td><td>TEMBAK</td><td>Tembak Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6285733141560' target='_blank'>6285733141560</a></td></tr>
+<tr><td>Misli</td><td>S04</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281398579556' target='_blank'>6281398579556</a></td></tr>
+<tr><td>Moch Abdul Razak</td><td>S31</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6288991094236' target='_blank'>6288991094236</a></td></tr>
+<tr><td>Moch Rasid</td><td>TEMBAK</td><td>Tembak Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281249348837' target='_blank'>6281249348837</a></td></tr>
+<tr><td>Moch Syafii</td><td>S64</td><td>Batangan Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281335970207' target='_blank'>6281335970207</a></td></tr>
+<tr><td>Moch. Abd. Madjid</td><td>S32</td><td></td><td>SPSI KEP</td><td><a class='wa' href='https://wa.me/6281216869486' target='_blank'>6281216869486</a></td></tr>
+<tr><td>Moch. Habibi</td><td>S35</td><td></td><td>SPSI KEP</td><td><a class='wa' href='https://wa.me/6281703116399' target='_blank'>6281703116399</a></td></tr>
+<tr><td>Moch. Hamzah</td><td>TEMBAK</td><td>Tembak Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281388647081' target='_blank'>6281388647081</a></td></tr>
+<tr><td>Moch. Kasim</td><td>S41</td><td>Batangan Haulage</td><td>PBS</td><td><a class='wa' href='https://wa.me/6285831429199' target='_blank'>6285831429199</a></td></tr>
+<tr><td>Mochamad Djubaidi</td><td>S40</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285100853771' target='_blank'>6285100853771</a></td></tr>
+<tr><td>Moh Duhri</td><td>S86</td><td></td><td>SPSI KEP</td><td><a class='wa' href='https://wa.me/6281218836016' target='_blank'>6281218836016</a></td></tr>
+<tr><td>Muayyad</td><td>TEMBAK</td><td>Tembak Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281999946261' target='_blank'>6281999946261</a></td></tr>
+<tr><td>Muflihin Arif</td><td>S34</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281559961861' target='_blank'>6281559961861</a></td></tr>
+<tr><td>Muhammad</td><td>S33</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281931632770' target='_blank'>6281931632770</a></td></tr>
+<tr><td>Muharom Rusdiana</td><td>S01</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6287878355888' target='_blank'>6287878355888</a></td></tr>
+<tr><td>Mujianto</td><td>S39</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281332032830' target='_blank'>6281332032830</a></td></tr>
+<tr><td>Mujib</td><td>S86</td><td></td><td>SPSI KEP</td><td><a class='wa' href='https://wa.me/6285701555683' target='_blank'>6285701555683</a></td></tr>
+<tr><td>Mulyadi</td><td>S22</td><td></td><td>SPSI KEP</td><td><a class='wa' href='https://wa.me/628815570422' target='_blank'>628815570422</a></td></tr>
+<tr><td>Muniri</td><td>S25</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6283192523304' target='_blank'>6283192523304</a></td></tr>
+<tr><td>Muslih</td><td>TEMBAK</td><td>Tembak Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/628388849541' target='_blank'>628388849541</a></td></tr>
+<tr><td>Muslimin</td><td>S09</td><td>Batangan Haulage</td><td>PBS</td><td><a class='wa' href='https://wa.me/6285775058716' target='_blank'>6285775058716</a></td></tr>
+<tr><td>Narto</td><td>S52/S53/S54</td><td>Cadangan Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/628883521556' target='_blank'>628883521556</a></td></tr>
+<tr><td>Nur Rohman</td><td>TEMBAK</td><td>Tembak Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6287721833436' target='_blank'>6287721833436</a></td></tr>
+<tr><td>Nur Sakdi</td><td>S58</td><td>Batangan Dooring</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281231824330' target='_blank'>6281231824330</a></td></tr>
+<tr><td>Poniman</td><td>TEMBAK</td><td>Tembak Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281249263864' target='_blank'>6281249263864</a></td></tr>
+<tr><td>Puji</td><td>S40</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281233826581' target='_blank'>6281233826581</a></td></tr>
+<tr><td>Purnomo</td><td>TEMBAK</td><td>Tembak Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6289512116733' target='_blank'>6289512116733</a></td></tr>
+<tr><td>Rachmad Hidayatulloh</td><td>S04</td><td></td><td>SPSI KEP</td><td><a class='wa' href='https://wa.me/6281259690075' target='_blank'>6281259690075</a></td></tr>
+<tr><td>Retno Iswandi</td><td>S19</td><td>Batangan Haulage</td><td>PBS</td><td><a class='wa' href='https://wa.me/6285731583283' target='_blank'>6285731583283</a></td></tr>
+<tr><td>Rifai</td><td>S16</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6283850280034' target='_blank'>6283850280034</a></td></tr>
+<tr><td>Rizaldi Ahmad</td><td>TEMBAK</td><td>Tembak Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6282210291151' target='_blank'>6282210291151</a></td></tr>
+<tr><td>Romadji</td><td>S37</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281231785990' target='_blank'>6281231785990</a></td></tr>
+<tr><td>Sadi</td><td>S04</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285101328007' target='_blank'>6285101328007</a></td></tr>
+<tr><td>Samsul Arief</td><td>S09</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/628989727236' target='_blank'>628989727236</a></td></tr>
+<tr><td>Samsul Arifin</td><td>TEMBAK</td><td>Tembak Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281294731937' target='_blank'>6281294731937</a></td></tr>
+<tr><td>Santoso</td><td>S63</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281332856914' target='_blank'>6281332856914</a></td></tr>
+<tr><td>Saru'i</td><td>S94</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6289601115699' target='_blank'>6289601115699</a></td></tr>
+<tr><td>Seno</td><td>S45</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281216892711' target='_blank'>6281216892711</a></td></tr>
+<tr><td>Sihono</td><td>S44</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6285606626660' target='_blank'>6285606626660</a></td></tr>
+<tr><td>Siswanto</td><td>S64</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/62881036565964' target='_blank'>62881036565964</a></td></tr>
+<tr><td>Siswanto tembak</td><td>S31</td><td></td><td>SPSI KEP</td><td><a class='wa' href='https://wa.me/62881036771307' target='_blank'>62881036771307</a></td></tr>
+<tr><td>Slamet Sugito</td><td>S55</td><td>Batangan Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281331169989' target='_blank'>6281331169989</a></td></tr>
+<tr><td>Slamet Wahyudi</td><td>S63</td><td></td><td>SPSI KEP</td><td><a class='wa' href='https://wa.me/6285784281849' target='_blank'>6285784281849</a></td></tr>
+<tr><td>Soedjiono</td><td>S32</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6282139694227' target='_blank'>6282139694227</a></td></tr>
+<tr><td>Soegiyanto</td><td>S03</td><td>Batangan Haulage</td><td>PBS</td><td><a class='wa' href='https://wa.me/6288217617567' target='_blank'>6288217617567</a></td></tr>
+<tr><td>Sofianto</td><td>S23</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6285931365285' target='_blank'>6285931365285</a></td></tr>
+<tr><td>Soimon</td><td>S09</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6287854366649' target='_blank'>6287854366649</a></td></tr>
+<tr><td>Soleh</td><td>S40</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281216133187' target='_blank'>6281216133187</a></td></tr>
+<tr><td>Sucipto</td><td>S44</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281553522810' target='_blank'>6281553522810</a></td></tr>
+<tr><td>Sugianto</td><td>S13</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281359077529' target='_blank'>6281359077529</a></td></tr>
+<tr><td>Sugiantoro</td><td>S57/S58/S65</td><td>Cadangan Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6282233652290' target='_blank'>6282233652290</a></td></tr>
+<tr><td>Sugiarto</td><td>S17</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6289677915996' target='_blank'>6289677915996</a></td></tr>
+<tr><td>Sugik Riyanto</td><td>S35</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/628563106634' target='_blank'>628563106634</a></td></tr>
+<tr><td>Suhardi</td><td>S59</td><td>Batangan Dooring</td><td>NIBA</td><td><a class='wa' href='https://wa.me/62882009656497' target='_blank'>62882009656497</a></td></tr>
+<tr><td>Suharto</td><td>S39</td><td></td><td>SPSI KEP</td><td><a class='wa' href='https://wa.me/6281235517562' target='_blank'>6281235517562</a></td></tr>
+<tr><td>Suherman</td><td>S51</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281357844576' target='_blank'>6281357844576</a></td></tr>
+<tr><td>Suliman</td><td>S01</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281703273660' target='_blank'>6281703273660</a></td></tr>
+<tr><td>Sunarto_1</td><td>S38</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281388861208' target='_blank'>6281388861208</a></td></tr>
+<tr><td>Sunarto_2</td><td>S31</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/628155632460' target='_blank'>628155632460</a></td></tr>
+<tr><td>Supriyadi</td><td>S49</td><td>Batangan Dooring</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6282332499008' target='_blank'>6282332499008</a></td></tr>
+<tr><td>Suridan</td><td>S64</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285232677366' target='_blank'>6285232677366</a></td></tr>
+<tr><td>Susilo</td><td>S02</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/628976407918' target='_blank'>628976407918</a></td></tr>
+<tr><td>Sutrisno</td><td>S25</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6285938354984' target='_blank'>6285938354984</a></td></tr>
+<tr><td>Suwarno</td><td>S44</td><td>Batangan Haulage</td><td>PBS</td><td><a class='wa' href='https://wa.me/6281234535705' target='_blank'>6281234535705</a></td></tr>
+<tr><td>Suwarno</td><td>S17</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285703527066' target='_blank'>6285703527066</a></td></tr>
+<tr><td>Suwito</td><td>S34</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6288200902499' target='_blank'>6288200902499</a></td></tr>
+<tr><td>Syafii</td><td>S26</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6287856815061' target='_blank'>6287856815061</a></td></tr>
+<tr><td>Syafrianto</td><td>TEMBAK</td><td>Tembak Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281266947228' target='_blank'>6281266947228</a></td></tr>
+<tr><td>Syaiful Anwar</td><td>S57</td><td>Batangan Dooring</td><td>NIBA</td><td><a class='wa' href='https://wa.me/62882009614938' target='_blank'>62882009614938</a></td></tr>
+<tr><td>Tapiin</td><td>S49</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281331179170' target='_blank'>6281331179170</a></td></tr>
+<tr><td>Tedi Kusuma</td><td>TEMBAK</td><td>Tembak Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285745983103' target='_blank'>6285745983103</a></td></tr>
+<tr><td>Teguh Rinarko</td><td>T01</td><td>Batangan Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6282132687357' target='_blank'>6282132687357</a></td></tr>
+<tr><td>Toni Arianto</td><td>S37</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285232527478' target='_blank'>6285232527478</a></td></tr>
+<tr><td>Tri Yulianto Setiawan</td><td>S03</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281231226361' target='_blank'>6281231226361</a></td></tr>
+<tr><td>Tunggal Agus Sutiono</td><td>S54</td><td>Batangan Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/628887191623' target='_blank'>628887191623</a></td></tr>
+<tr><td>Ukat Handan Buya</td><td>S26</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6285230970279' target='_blank'>6285230970279</a></td></tr>
+<tr><td>Umar</td><td>S37</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6282233936079' target='_blank'>6282233936079</a></td></tr>
+<tr><td>Umar Faruk</td><td>S10</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6287755892876' target='_blank'>6287755892876</a></td></tr>
+<tr><td>Untung</td><td>S23</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281217171435' target='_blank'>6281217171435</a></td></tr>
+<tr><td>Waki</td><td>S11</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6283125200763' target='_blank'>6283125200763</a></td></tr>
+<tr><td>Widodo sudjut saputro</td><td>S22</td><td>Batangan Haulage</td><td>NIBA</td><td><a class='wa' href='https://wa.me/6281326818381' target='_blank'>6281326818381</a></td></tr>
+<tr><td>Yanuar Affandy</td><td>TEMBAK</td><td>Tembak Dooring</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6281252741692' target='_blank'>6281252741692</a></td></tr>
+<tr><td>Yonis Chandra Irawan</td><td>S62</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6283842832182' target='_blank'>6283842832182</a></td></tr>
+<tr><td>Zainuddin</td><td>S30</td><td>Batangan Haulage</td><td>Non Serikat</td><td><a class='wa' href='https://wa.me/6287851527856' target='_blank'>6287851527856</a></td></tr>
+</tbody></table></div>
+<div id='cardView' style='display:none'>
+<div class='card-grid'>
+<div class='card'>
+<div class='name'>Abd Rohman</div>
+<div class='small'>Lambung: S86</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6287701354151' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Abdul</div>
+<div class='small'>Lambung: S25</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281232286663' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Abdul Gani</div>
+<div class='small'>Lambung: S38</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281232689947' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Abdul Hamid</div>
+<div class='small'>Lambung: S03</div>
+<div class='small'>Status: </div>
+<div class='small'>Serikat: SPSI KEP</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282230014446' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Abdur Rachman</div>
+<div class='small'>Lambung: S47</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282245671550' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Ach. Hafit</div>
+<div class='small'>Lambung: S11</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: PBS</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282229095731' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Achmad Agi Prasetyo</div>
+<div class='small'>Lambung: S33</div>
+<div class='small'>Status: </div>
+<div class='small'>Serikat: SPSI KEP</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281333096840' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Adenan</div>
+<div class='small'>Lambung: S51</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281233676267' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Adi Wahyono</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282291705474' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Aditia Junianto</div>
+<div class='small'>Lambung: S38</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/62895321231818' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Agung Prasetyo Utomo</div>
+<div class='small'>Lambung: S55/S59/S60</div>
+<div class='small'>Status: Cadangan Dooring</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281283533126' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Agus Efendi</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282142534081' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Agus Salim</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281997923483' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Agus Santoso</div>
+<div class='small'>Lambung: S63</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6288216940034' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Agus Suwanto</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285293298007' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Ahmad Rizal</div>
+<div class='small'>Lambung: S10</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6283844622988' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Ahmadi</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285280267880' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Ajis Sujarwo</div>
+<div class='small'>Lambung: S53</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285940342567' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Alvian</div>
+<div class='small'>Lambung: S52</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282139666360' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Amali Hadi Priyanto</div>
+<div class='small'>Lambung: S42</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6289685450429' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Andik Harianto</div>
+<div class='small'>Lambung: S16</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6287853620080' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Andik Prasetyo</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285855114262' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Aris Septio Rubiantoro</div>
+<div class='small'>Lambung: S18</div>
+<div class='small'>Status: </div>
+<div class='small'>Serikat: SPSI KEP</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281338182424' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Asnan</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281349347672' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Badrus Soleh</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281358653330' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Bambang F</div>
+<div class='small'>Lambung: S24</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281330429600' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Basuki Rachmat</div>
+<div class='small'>Lambung: S94</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282134813500' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Bonefasius Nusa</div>
+<div class='small'>Lambung: S38</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282264951207' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Budi Santoso</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282336027742' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Budi Santoso (Breng)</div>
+<div class='small'>Lambung: S41</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281357209143' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Budi Santoso (Cad)</div>
+<div class='small'>Lambung: S30</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281246467366' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Budi Satriyo</div>
+<div class='small'>Lambung: S33</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/628133110001' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Cucut Eko Sunaryo</div>
+<div class='small'>Lambung: S39</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285607046310' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Darsono</div>
+<div class='small'>Lambung: S19</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285749016711' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Davit</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282229371641' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Dedi Navita</div>
+<div class='small'>Lambung: S01</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282229053900' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Dedi Widiantoro</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285730650146' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Dedy Andryan</div>
+<div class='small'>Lambung: S45</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281326452469' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Dian Ariyanto</div>
+<div class='small'>Lambung: S43</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285854564229' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Didi Supriharyono</div>
+<div class='small'>Lambung: S10</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285385532458' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Didik Eko Cahyono</div>
+<div class='small'>Lambung: S46</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282330425462' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Didik Muryanto</div>
+<div class='small'>Lambung: S18</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/62895371701111' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Dodi Agung Saputro</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285231170258' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Eko Sulistyono</div>
+<div class='small'>Lambung: T02</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285853643186' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Fauzen</div>
+<div class='small'>Lambung: S24</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282141100091' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Graha Yudiana</div>
+<div class='small'>Lambung: S60</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6288216923925' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>H. Moch. Makki</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285103228871' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Hadi Susanto</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282331745017' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Hamzah Abubakar</div>
+<div class='small'>Lambung: S17</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285904330951' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Hariyanto</div>
+<div class='small'>Lambung: S11</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282229327458' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Harsino</div>
+<div class='small'>Lambung: S14</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: PBS</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/62818346536' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Hartoyo</div>
+<div class='small'>Lambung: S41</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285707412065' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Hendra Rachmad Kurniawan</div>
+<div class='small'>Lambung: S13</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/62895329694233' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Henri Prasetyo</div>
+<div class='small'>Lambung: S19</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281326396675' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Hermanto_1</div>
+<div class='small'>Lambung: S43</div>
+<div class='small'>Status: </div>
+<div class='small'>Serikat: SPSI KEP</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6283195625877' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Hermanto_2</div>
+<div class='small'>Lambung: S24</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/628819804874' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Ilham Anshori</div>
+<div class='small'>Lambung: S30</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282142011506' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Imam Basuki</div>
+<div class='small'>Lambung: S02</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285257229984' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Imam Siswanto</div>
+<div class='small'>Lambung: S51</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/62881027627464' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Imam Syafii</div>
+<div class='small'>Lambung: S22</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: PBS</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6287852989009' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Imam Wahyudi</div>
+<div class='small'>Lambung: S14</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285748989956' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Irawan Sugiono</div>
+<div class='small'>Lambung: S46/S47/S48</div>
+<div class='small'>Status: Cadangan Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281336617029' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Ismail</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285697827472' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Iswoyo</div>
+<div class='small'>Lambung: S35</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281231965572' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Iwan Ardiansyah</div>
+<div class='small'>Lambung: S23</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285230370077' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Jakah Pranata</div>
+<div class='small'>Lambung: S65</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6289516069300' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Joesoef Kriswanto</div>
+<div class='small'>Lambung: S26</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282143486874' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Joko Mulyono</div>
+<div class='small'>Lambung: S14</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6287722556805' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Kaharudin</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281323303738' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Kuat Sutrisno</div>
+<div class='small'>Lambung: T01/T02/S05</div>
+<div class='small'>Status: Cadangan Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282229638533' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Lasmuri</div>
+<div class='small'>Lambung: S21</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281231980694' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Lukman</div>
+<div class='small'>Lambung: S18</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6287701954269' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Lukmanul Hakim</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282143746828' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>M Arisjal Mubarok</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Dooring</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6283830680189' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>M Ikhsan</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282231293629' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>M. Darwis</div>
+<div class='small'>Lambung: S21</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6287741433666' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>M. Harsad</div>
+<div class='small'>Lambung: S13</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/62881027077514' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>M. Sadi</div>
+<div class='small'>Lambung: S42</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285100738405' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>M.Rahmat</div>
+<div class='small'>Lambung: S05</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285706706759' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Machmud</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281235910554' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Mahfut</div>
+<div class='small'>Lambung: S62</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281217181845' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Mamad Mahmudia</div>
+<div class='small'>Lambung: S94</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282140991199' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Maman Santoso</div>
+<div class='small'>Lambung: S02</div>
+<div class='small'>Status: </div>
+<div class='small'>Serikat: SPSI KEP</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282233304989' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Martinus Suparyo</div>
+<div class='small'>Lambung: S42</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281330309948' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Maslan</div>
+<div class='small'>Lambung: S16</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281216755166' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Mat Nilan</div>
+<div class='small'>Lambung: S32</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285706027208' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Matrusi</div>
+<div class='small'>Lambung: S62</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285727323268' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Maulana Dwi Hardianto</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285733141560' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Misli</div>
+<div class='small'>Lambung: S04</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281398579556' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Moch Abdul Razak</div>
+<div class='small'>Lambung: S31</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6288991094236' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Moch Rasid</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281249348837' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Moch Syafii</div>
+<div class='small'>Lambung: S64</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281335970207' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Moch. Abd. Madjid</div>
+<div class='small'>Lambung: S32</div>
+<div class='small'>Status: </div>
+<div class='small'>Serikat: SPSI KEP</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281216869486' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Moch. Habibi</div>
+<div class='small'>Lambung: S35</div>
+<div class='small'>Status: </div>
+<div class='small'>Serikat: SPSI KEP</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281703116399' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Moch. Hamzah</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281388647081' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Moch. Kasim</div>
+<div class='small'>Lambung: S41</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: PBS</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285831429199' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Mochamad Djubaidi</div>
+<div class='small'>Lambung: S40</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285100853771' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Moh Duhri</div>
+<div class='small'>Lambung: S86</div>
+<div class='small'>Status: </div>
+<div class='small'>Serikat: SPSI KEP</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281218836016' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Muayyad</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281999946261' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Muflihin Arif</div>
+<div class='small'>Lambung: S34</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281559961861' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Muhammad</div>
+<div class='small'>Lambung: S33</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281931632770' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Muharom Rusdiana</div>
+<div class='small'>Lambung: S01</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6287878355888' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Mujianto</div>
+<div class='small'>Lambung: S39</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281332032830' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Mujib</div>
+<div class='small'>Lambung: S86</div>
+<div class='small'>Status: </div>
+<div class='small'>Serikat: SPSI KEP</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285701555683' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Mulyadi</div>
+<div class='small'>Lambung: S22</div>
+<div class='small'>Status: </div>
+<div class='small'>Serikat: SPSI KEP</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/628815570422' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Muniri</div>
+<div class='small'>Lambung: S25</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6283192523304' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Muslih</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/628388849541' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Muslimin</div>
+<div class='small'>Lambung: S09</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: PBS</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285775058716' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Narto</div>
+<div class='small'>Lambung: S52/S53/S54</div>
+<div class='small'>Status: Cadangan Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/628883521556' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Nur Rohman</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6287721833436' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Nur Sakdi</div>
+<div class='small'>Lambung: S58</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281231824330' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Poniman</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281249263864' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Puji</div>
+<div class='small'>Lambung: S40</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281233826581' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Purnomo</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6289512116733' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Rachmad Hidayatulloh</div>
+<div class='small'>Lambung: S04</div>
+<div class='small'>Status: </div>
+<div class='small'>Serikat: SPSI KEP</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281259690075' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Retno Iswandi</div>
+<div class='small'>Lambung: S19</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: PBS</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285731583283' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Rifai</div>
+<div class='small'>Lambung: S16</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6283850280034' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Rizaldi Ahmad</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282210291151' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Romadji</div>
+<div class='small'>Lambung: S37</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281231785990' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Sadi</div>
+<div class='small'>Lambung: S04</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285101328007' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Samsul Arief</div>
+<div class='small'>Lambung: S09</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/628989727236' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Samsul Arifin</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281294731937' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Santoso</div>
+<div class='small'>Lambung: S63</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281332856914' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Saru'i</div>
+<div class='small'>Lambung: S94</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6289601115699' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Seno</div>
+<div class='small'>Lambung: S45</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281216892711' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Sihono</div>
+<div class='small'>Lambung: S44</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285606626660' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Siswanto</div>
+<div class='small'>Lambung: S64</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/62881036565964' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Siswanto tembak</div>
+<div class='small'>Lambung: S31</div>
+<div class='small'>Status: </div>
+<div class='small'>Serikat: SPSI KEP</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/62881036771307' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Slamet Sugito</div>
+<div class='small'>Lambung: S55</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281331169989' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Slamet Wahyudi</div>
+<div class='small'>Lambung: S63</div>
+<div class='small'>Status: </div>
+<div class='small'>Serikat: SPSI KEP</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285784281849' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Soedjiono</div>
+<div class='small'>Lambung: S32</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282139694227' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Soegiyanto</div>
+<div class='small'>Lambung: S03</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: PBS</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6288217617567' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Sofianto</div>
+<div class='small'>Lambung: S23</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285931365285' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Soimon</div>
+<div class='small'>Lambung: S09</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6287854366649' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Soleh</div>
+<div class='small'>Lambung: S40</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281216133187' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Sucipto</div>
+<div class='small'>Lambung: S44</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281553522810' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Sugianto</div>
+<div class='small'>Lambung: S13</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281359077529' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Sugiantoro</div>
+<div class='small'>Lambung: S57/S58/S65</div>
+<div class='small'>Status: Cadangan Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282233652290' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Sugiarto</div>
+<div class='small'>Lambung: S17</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6289677915996' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Sugik Riyanto</div>
+<div class='small'>Lambung: S35</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/628563106634' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Suhardi</div>
+<div class='small'>Lambung: S59</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/62882009656497' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Suharto</div>
+<div class='small'>Lambung: S39</div>
+<div class='small'>Status: </div>
+<div class='small'>Serikat: SPSI KEP</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281235517562' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Suherman</div>
+<div class='small'>Lambung: S51</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281357844576' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Suliman</div>
+<div class='small'>Lambung: S01</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281703273660' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Sunarto_1</div>
+<div class='small'>Lambung: S38</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281388861208' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Sunarto_2</div>
+<div class='small'>Lambung: S31</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/628155632460' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Supriyadi</div>
+<div class='small'>Lambung: S49</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282332499008' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Suridan</div>
+<div class='small'>Lambung: S64</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285232677366' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Susilo</div>
+<div class='small'>Lambung: S02</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/628976407918' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Sutrisno</div>
+<div class='small'>Lambung: S25</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285938354984' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Suwarno</div>
+<div class='small'>Lambung: S44</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: PBS</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281234535705' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Suwarno</div>
+<div class='small'>Lambung: S17</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285703527066' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Suwito</div>
+<div class='small'>Lambung: S34</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6288200902499' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Syafii</div>
+<div class='small'>Lambung: S26</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6287856815061' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Syafrianto</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281266947228' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Syaiful Anwar</div>
+<div class='small'>Lambung: S57</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/62882009614938' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Tapiin</div>
+<div class='small'>Lambung: S49</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281331179170' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Tedi Kusuma</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285745983103' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Teguh Rinarko</div>
+<div class='small'>Lambung: T01</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282132687357' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Toni Arianto</div>
+<div class='small'>Lambung: S37</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285232527478' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Tri Yulianto Setiawan</div>
+<div class='small'>Lambung: S03</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281231226361' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Tunggal Agus Sutiono</div>
+<div class='small'>Lambung: S54</div>
+<div class='small'>Status: Batangan Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/628887191623' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Ukat Handan Buya</div>
+<div class='small'>Lambung: S26</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6285230970279' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Umar</div>
+<div class='small'>Lambung: S37</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6282233936079' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Umar Faruk</div>
+<div class='small'>Lambung: S10</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6287755892876' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Untung</div>
+<div class='small'>Lambung: S23</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281217171435' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Waki</div>
+<div class='small'>Lambung: S11</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6283125200763' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Widodo sudjut saputro</div>
+<div class='small'>Lambung: S22</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: NIBA</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281326818381' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Yanuar Affandy</div>
+<div class='small'>Lambung: TEMBAK</div>
+<div class='small'>Status: Tembak Dooring</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6281252741692' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Yonis Chandra Irawan</div>
+<div class='small'>Lambung: S62</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6283842832182' target='_blank'>WhatsApp</a></div>
+</div>
+<div class='card'>
+<div class='name'>Zainuddin</div>
+<div class='small'>Lambung: S30</div>
+<div class='small'>Status: Batangan Haulage</div>
+<div class='small'>Serikat: Non Serikat</div>
+<div style='margin-top:8px'><a class='wa' href='https://wa.me/6287851527856' target='_blank'>WhatsApp</a></div>
+</div>
+
+</div></div>
+<div class="footer">Total entries: 171</div>
+</div>
+<script>
+function show(v){document.getElementById('tableView').style.display = v==='table'?'block':'none';document.getElementById('cardView').style.display = v==='cards'?'block':'none';}
+function resetFilter(){document.getElementById('q').value='';filter();}
+function filter(){var q=document.getElementById('q').value.toLowerCase();var rows=document.querySelectorAll('#tbl tbody tr');rows.forEach(function(r){r.style.display = r.innerText.toLowerCase().includes(q)?'':'none';});var cards=document.querySelectorAll('.card-grid .card');cards.forEach(function(c){c.style.display = c.innerText.toLowerCase().includes(q)?'':'none';});}
+</script></body></html>
